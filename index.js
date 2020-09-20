@@ -25,6 +25,9 @@ import Radio from './components/Radio.vue'
 import Tabs from './components/Tabs.vue'
 import Toggle from './components/Toggle.vue'
 import VerticalCell from './components/VerticalCell.vue'
+import Container from './components/Container.vue'
+import Chip from './components/Chip.vue'
+import Panels from './components/Panels.vue'
 
 
 export default {
@@ -45,5 +48,8 @@ export default {
 		Vue.component('Tabs', Tabs);
 		Vue.component('Toggle', Toggle);
 		Vue.component('VerticalCell', VerticalCell);
+		Vue.component('Container', Container);
+		Vue.component('Chip', Chip);
+		Vue.component('Panels', Panels);
   }
 }
