@@ -15,7 +15,7 @@
 
 
 <script>
-import skewEffect from '@/utils/skewEffectDirective.js';
+import skewEffect from '../utils/skewEffectDirective.js';
 
 export default {
 	props: {

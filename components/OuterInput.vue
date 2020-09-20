@@ -27,7 +27,7 @@
 
 
 <script>
-import { getCoords, bindDirectiveEvents, unbindDirectiveEvents } from '@/utils/events.js';
+import { getCoords, bindDirectiveEvents, unbindDirectiveEvents } from '../utils/events.js';
 
 export default {
 	data() {

@@ -28,8 +28,8 @@
 
 
 <script>
-import { getTouch, bindDirectiveEvents, unbindDirectiveEvents } from '@/utils/events.js';
-import { removeStyles } from '@/utils/styles.js'
+import { getTouch, bindDirectiveEvents, unbindDirectiveEvents } from '../utils/events.js';
+import { removeStyles } from '../utils/styles.js'
 
 export default {
 	data() {

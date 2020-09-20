@@ -31,9 +31,9 @@
 
 
 <script>
-import Avatar from '@/components/Avatar.vue'
+import Avatar from '../components/Avatar.vue'
 
-import skewEffect from '@/utils/skewEffectDirective.js';
+import skewEffect from '../utils/skewEffectDirective.js';
 
 export default {
 	components: {
