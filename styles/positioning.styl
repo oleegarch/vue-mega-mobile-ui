@@ -1,0 +1,38 @@
+.relative
+	position relative
+.absolute,
+.absolute-center,
+.absolute-top-left,
+.absolute-top-right,
+.absolute-bottom-left,
+.absolute-bottom-right
+	position absolute
+.fixed,
+.fixed-center,
+.fixed-top-left,
+.fixed-top-right,
+.fixed-bottom-left,
+.fixed-bottom-right
+	position fixed
+
+.absolute-center,
+.fixed-center
+	top 50%
+	left 50%
+	transform translate(-50%, -50%)
+.absolute-top-left,
+.fixed-top-right
+	top 0
+	left 0
+.absolute-top-right,
+.fixed-top-left
+	top 0
+	right 0
+.absolute-bottom-left,
+.fixed-bottom-left
+	bottom 0
+	left 0
+.absolute-bottom-right,
+.fixed-bottom-right
+	bottom 0
+	right 0

@@ -1,0 +1,130 @@
+/*
+ * insets
+ */
+:root
+	--safe-area-inset-top env(safe-area-inset-top)
+	--safe-area-inset-right env(safe-area-inset-right)
+	--safe-area-inset-bottom env(safe-area-inset-bottom)
+	--safe-area-inset-left env(safe-area-inset-left)
+.padding-top-safe-area
+	padding-top var(--safe-area-inset-top)
+.padding-right-safe-area
+	padding-right var(--safe-area-inset-right)
+.padding-bottom-safe-area
+	padding-bottom var(--safe-area-inset-bottom)
+.padding-left-safe-area
+	padding-left var(--safe-area-inset-left)
+
+/*
+ * indents
+ */
+$space-base   ?= 16px
+$space-x-base ?= $space-base
+$space-y-base ?= $space-base
+$spaces ?= {
+	none: {
+		x: 0 !important,
+		y: 0 !important
+	},
+	xs: {
+		x: ($space-x-base * .25),
+		y: ($space-y-base * .25)
+	},
+	sm: {
+		x: ($space-x-base * .5),
+		y: ($space-y-base * .5)
+	},
+	md: {
+		x: $space-x-base,
+		y: $space-y-base
+	},
+	lg: {
+		x: ($space-x-base * 1.5),
+		y: ($space-y-base * 1.5)
+	},
+	xl: {
+		x: ($space-x-base * 3),
+		y: ($space-y-base * 3)
+	}
+}
+
+
+.padding-inner
+	@media (min-width 460px)
+		padding 20px 60px
+	@media (max-width 460px)
+		padding 10px
+
+
+.fit
+	width 100% !important
+	height 100% !important
+.full-height
+	height 100% !important
+.full-width
+	width 100% !important
+	margin-left 0 !important
+	margin-right 0 !important
+
+.window-height
+	margin-top 0 !important
+	margin-bottom 0 !important
+	height 100vh !important
+.window-width
+	margin-left 0 !important
+	margin-right 0 !important
+	width 100vw !important
+
+.block
+	display block !important
+.inline-block
+	display inline-block !important
+.inline-block-middle
+	display inline-block !important
+	> *
+		vertical-align middle
+
+for $space, $value in $spaces
+
+	.pa-{$space}
+		padding: $value.y $value.x
+	.pl-{$space}
+		padding-left: $value.x
+	.pr-{$space}
+		padding-right: $value.x
+	.pt-{$space}
+		padding-top: $value.y
+	.pb-{$space}
+		padding-bottom: $value.y
+	.px-{$space}
+		@extends .pl-{$space}, .pr-{$space}
+	.py-{$space}
+		@extends .pt-{$space}, .pb-{$space}
+
+	.ma-{$space}
+		margin: $value.y $value.x
+	.ml-{$space}
+		margin-left: $value.x
+	.mr-{$space}
+		margin-right: $value.x
+	.mt-{$space}
+		margin-top: $value.y
+	.mb-{$space}
+		margin-bottom: $value.y
+	.mx-{$space}
+		@extends .ml-{$space}, .mr-{$space}
+	.my-{$space}
+		@extends .mt-{$space}, .mb-{$space}
+
+.ml-auto
+	margin-left auto
+.mr-auto
+	margin-right auto
+.mx-auto
+	@extends .ml-auto, .mr-auto
+	
+
+.on-left
+	margin-right $space-base * 0.75
+.on-right
+	margin-left $space-base * 0.75

@@ -1,0 +1,72 @@
+.material-icons
+  width 1em
+  height 1em
+  overflow hidden
+
+.font-loading
+	font-family 'BLOKK'
+
+.font-numbers,
+.font-monospace
+	font-family monospace, 'Avenir', Helvetica, Arial, sans-serif
+
+.ellipsis
+	text-overflow ellipsis
+	white-space nowrap
+	overflow hidden
+
+$size-base ?= 16px
+$sizes ?= {
+	xs: $size-base * .60,
+	sm: $size-base * .80,
+	md: $size-base,
+	lg: $size-base * 1.25,
+	xl: $size-base * 1.5
+}
+
+for $size, $value in $sizes
+	.text-{$size}
+		font-size $value
+
+.uppercase
+	text-transform uppercase
+.lowercase
+	text-transform lowercase
+.capitalize
+	text-transform capitalize
+
+.rtl
+	direction rtl
+
+.text-
+	&center
+		text-align center
+	&left
+		text-align left
+	&right
+		text-align right
+	&justify
+		text-align justify
+		hyphens auto
+
+	&italic
+		font-style italic
+	&bold
+		font-weight bold
+
+	&no-wrap
+		white-space nowrap
+
+.text-link-animate
+	display inline-block
+	color #000
+	text-decoration none
+	&:after
+		content ''
+		display block
+		width 0
+		height 2px
+		background currentColor
+		transition width 0.15s
+	&:hover:after
+		width 100%
