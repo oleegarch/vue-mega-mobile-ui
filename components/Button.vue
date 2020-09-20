@@ -3,7 +3,7 @@
 		ref="button"
 		class="button flex-center overflow-hidden"
 		:class="[
-			{'stretched': stretched},
+			{'stretched': stretched, 'rounded': rounded, 'addShadow': addShadow},
 			textColor && `text-${textColor}`,
 			color && `bg-${color}`
 		]"
@@ -15,12 +15,13 @@
 
 
 <script>
-import skewEffect from '../utils/skewEffectDirective.js';
+import skewEffect from '@/utils/skewEffectDirective.js';
 
 export default {
 	props: {
 		label: String,
 		stretched: Boolean,
+		addShadow: Boolean,
 		color: {
 			type: String,
 			default: 'blue'
@@ -28,7 +29,8 @@ export default {
 		textColor: {
 			type: String,
 			default: 'white'
-		}
+		},
+		rounded: Boolean
 	},
 	directives: {
 		skewEffect
@@ -39,9 +41,8 @@ export default {
 
 <style lang="stylus">
 .button
-	height 40px
-	width 100%
-	padding 10px 20px
+	min-height 40px
+	padding 10px 40px
 	font-size 16px
 	border-radius 10px
 	transform-origin 50% 50%
@@ -49,4 +50,8 @@ export default {
 	user-select none
 	&.stretched
 		width 100%
+	&.rounded
+		border-radius 20px
+	&.addShadow
+		box-shadow 0 2px 5px 1px rgba(0,0,0, 0.2)
 </style>
