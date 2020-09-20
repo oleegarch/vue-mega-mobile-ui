@@ -29,21 +29,21 @@ import VerticalCell from './components/VerticalCell.vue'
 
 export default {
   install(Vue) {
-  	Vue.component('Avatar', Vue.component);
-		Vue.component('Button', Vue.component);
-		Vue.component('Cell', Vue.component);
-		Vue.component('Checkbox', Vue.component);
-		Vue.component('CoolContent', Vue.component);
-		Vue.component('CoolHeader', Vue.component);
-		Vue.component('Div', Vue.component);
-		Vue.component('Grid', Vue.component);
-		Vue.component('IconBlock', Vue.component);
-		Vue.component('ModalPage', Vue.component);
-		Vue.component('ModalView', Vue.component);
-		Vue.component('OuterInput', Vue.component);
-		Vue.component('Radio', Vue.component);
-		Vue.component('Tabs', Vue.component);
-		Vue.component('Toggle', Vue.component);
-		Vue.component('VerticalCell', Vue.component);
+  	Vue.component('Avatar', Avatar);
+		Vue.component('Button', Button);
+		Vue.component('Cell', Cell);
+		Vue.component('Checkbox', Checkbox);
+		Vue.component('CoolContent', CoolContent);
+		Vue.component('CoolHeader', CoolHeader);
+		Vue.component('Div', Div);
+		Vue.component('Grid', Grid);
+		Vue.component('IconBlock', IconBlock);
+		Vue.component('ModalPage', ModalPage);
+		Vue.component('ModalView', ModalView);
+		Vue.component('OuterInput', OuterInput);
+		Vue.component('Radio', Radio);
+		Vue.component('Tabs', Tabs);
+		Vue.component('Toggle', Toggle);
+		Vue.component('VerticalCell', VerticalCell);
   }
 }
