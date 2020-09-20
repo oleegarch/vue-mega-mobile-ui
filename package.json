@@ -1,6 +1,6 @@
 {
   "name": "vue-mega-mobile-ui",
-  "version": "1.0.10",
+  "version": "1.1.0",
   "description": "Vue components for creating mega very cool mobile apps",
   "main": "index.js",
   "publishConfig": { "registry": "https://npm.pkg.github.com/" },
