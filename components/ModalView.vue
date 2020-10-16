@@ -3,7 +3,8 @@
 		v-moving
 		ref="modalView"
 		class="modal-view padding-bottom-safe-area"
-		:class="{'active': active}"
+		:class="{'active': value}"
+		:style="{'zIndex': 1000 + Number(zIndex)}"
 	>
 		<slot/>
 	</div>
@@ -21,7 +22,17 @@ export default {
 		}
 	},
 	props: {
-		active: Boolean
+		value: Boolean,
+		zIndex: [String,Number]
+	},
+	watch: {
+		value(v) {
+			if(v) {
+				window.clearTimeout(this.onCloseAnimationEndedTimeout);
+			} else {
+				this.animateionCloseFire();
+			}
+		}
 	},
 	methods: {
 		canDrag(e) {
@@ -53,12 +64,25 @@ export default {
 		},
 		onUp(e) {
 			if(this.canDrag(e) && Math.abs(this.currentShiftX) > 20) {
+				this.$emit('input', false);
 				this.$emit('onClose');
 			}
 			removeStyles(this.$refs.modalView, ['transition', 'transform']);
 			this.moving = false;
 			this.direction = null;
 		},
+		animateionCloseFire(cb) {
+			const callback = () => {
+				if(cb) cb();
+				this.$emit('onCloseAnimationEnded');
+			}
+			if(this.$listeners && this.$listeners.onCloseAnimationEnded) {
+				if(!window.setTimeout)
+					return callback();
+				window.clearTimeout(this.onCloseAnimationEndedTimeout);
+				this.onCloseAnimationEndedTimeout = window.setTimeout(() => callback(), 500);
+			}
+		}
 	},
 	directives: {
 		moving: {

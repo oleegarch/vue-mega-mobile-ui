@@ -1,15 +1,26 @@
 <template>
 	<div
-		class="checkbox-container"
-		:class="{'checked': active}"
-		@click="toggle"
+		class="row items-center checkbox-container"
+		:class="`justify-${justify}`"
 	>
-		<div class="checkbox-circle" :class="'bg-' + (active ? color : 'grey-5')"></div>
+		<div v-if="leftLabel" class="mr-xs" @click="toggle">
+			<span>{{ leftLabel }}</span>
+		</div>
 		<div
-			class="checkbox flex-center"
-			:class="['bg-' + color, 'text-' + textColor]"
+			class="checkbox-block"
+			:class="{'checked': active}"
+			@click="toggle"
 		>
-			<i class="material-icons">check</i>
+			<div class="checkbox-circle" :class="'bg-' + (active ? color : 'grey-5')"></div>
+			<div
+				class="checkbox flex-center"
+				:class="['bg-' + color, 'text-' + textColor]"
+			>
+				<i class="material-icons">check</i>
+			</div>
+		</div>
+		<div v-if="label" class="ml-xs" @click="toggle">
+			<span>{{ label }}</span>
 		</div>
 	</div>
 </template>
@@ -18,13 +29,16 @@
 export default {
 	data() {
 		return {
-			active: !!this.value
+			active: this.isValueArray() ? this.value.indexOf(this.name) > -1 : !!this.value
 		}
 	},
 	props: {
 		value: {
-			type: Boolean,
+			type: [Array,Boolean],
 			default: true
+		},
+		name: {
+			type: String
 		},
 		color: {
 			type: String,
@@ -33,26 +47,50 @@ export default {
 		textColor: {
 			type: String,
 			default: 'white'
+		},
+		label: {
+			type: String
+		},
+		leftLabel: {
+			type: String
+		},
+		justify: {
+			type: String
 		}
 	},
 	watch: {
 		value(v) {
-			this.active = v;
+			if(this.isValueArray()) {
+				this.active = v.indexOf(this.name) > -1;
+			} else {
+				this.active = v;
+			}
 		},
 		active(v) {
-			this.$emit('input', v);
+			if(this.isValueArray()) {
+				let result = this.value.slice(0).filter(name => this.name !== name);
+				if(v === true && result.indexOf(this.name) === -1) {
+					result.push(this.name);
+				}	
+				this.$emit('input', result);
+			} else {
+				this.$emit('input', v);
+			}
 		}
 	},
 	methods: {
 		toggle() {
 			this.active = !this.active;
+		},
+		isValueArray() {
+			return Array.isArray(this.value) && typeof this.name === 'string';
 		}
 	}
 }
 </script>
 
 <style lang="stylus">
-.checkbox-container
+.checkbox-block
 	position relative
 	cursor pointer
 	.checkbox
@@ -77,6 +115,7 @@ export default {
 	&:hover
 		> .checkbox-circle
 			transform translate(-50%, -50%) scale(2)
+			opacity 0.1
 	&:not(.checked)
 		> .checkbox
 			background-color #fff !important

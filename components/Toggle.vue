@@ -1,17 +1,28 @@
 <template>
 	<div
-		class="toggle-container"
-		:class="{'checked': active}"
-		@click="toggle"
+		class="row items-center toggle-container"
+		:class="`justify-${justify}`"
 	>
-		<div class="toggle-circle-container">
-			<div class="toggle-circle-shadow" :class="'bg-' + (active ? color : 'grey-5')"></div>
-			<div
-				class="toggle-circle flex-center"
-				:class="['bg-' + color, 'text-' + textColor]"
-			></div>
+		<div v-if="leftLabel" class="mr-xs" @click="toggle">
+			<span>{{ leftLabel }}</span>
 		</div>
-		<div class="toggle-track" :class="'bg-' + (active ? color : 'grey-5')"></div>
+		<div
+			class="toggle-block"
+			:class="{'checked': active}"
+			@click="toggle"
+		>
+			<div class="toggle-circle-container">
+				<div class="toggle-circle-shadow" :class="'bg-' + (active ? color : 'grey-5')"></div>
+				<div
+					class="toggle-circle flex-center"
+					:class="['bg-' + color, 'text-' + textColor]"
+				></div>
+			</div>
+			<div class="toggle-track" :class="'bg-' + (active ? color : 'grey-5')"></div>
+		</div>
+		<div v-if="label" class="ml-xs" @click="toggle">
+			<span>{{ label }}</span>
+		</div>
 	</div>
 </template>
 
@@ -34,6 +45,15 @@ export default {
 		textColor: {
 			type: String,
 			default: 'white'
+		},
+		label: {
+			type: String
+		},
+		leftLabel: {
+			type: String
+		},
+		justify: {
+			type: String
 		}
 	},
 	watch: {
@@ -53,7 +73,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.toggle-container
+.toggle-block
 	position relative
 	cursor pointer
 	margin 6px 10px
@@ -87,6 +107,7 @@ export default {
 	&:hover
 		.toggle-circle-shadow
 			transform translate(-50%, -50%) scale(2)
+			opacity 0.1
 	&:not(.checked)
 		> .toggle-circle-container
 			left 0

@@ -1,25 +1,24 @@
 <template>
 	<div
-		class="modal-page-wrapper"
-		:class="{'active': value, 'modal-page-card-type': type === 'card'}"
+		class="modal-dialog-wrapper"
+		:class="{'active': value}"
 	>
 		<div
-			class="modal-mask"
-			:style="{'zIndex': 2000 + Number(zIndex)}"
+			class="modal-dialog-mask" 
+			:style="{'zIndex': 3000 + Number(zIndex)}"
 			@click="closeFire"
-		></div>
+		/>
 		<div
 			v-moving
-			ref="modalPage"
-			class="modal-page"
-			:style="{'zIndex': 2001 + Number(zIndex)}"
+			class="modal-dialog"
+			ref="modalDialog"
+			:style="{'zIndex': 3001 + Number(zIndex)}"
 		>
-			<div class="modal-page-header flex-center">
+			<div class="modal-dialog-header flex-center">
 				<slot name="header"/>
 			</div>
 			<div
-				class="modal-page-content"
-				:class="{'padding-bottom-safe-area': type !== 'card'}"
+				class="modal-dialog-content"
 				:style="{'paddingTop': $slots.header ? headerPadding || '60px' : 0}"
 				ref="content"
 			>
@@ -50,42 +49,37 @@ export default {
 		value(v) {
 			if(v) {
 				window.clearTimeout(this.onCloseAnimationEndedTimeout);
-				this.$refs.modalPage.style.willChange = 'transform';
 			} else {
-				this.animateionCloseFire(() => this.$refs.modalPage.style.willChange = undefined);
+				this.animateionCloseFire();
 			}
 		}
 	},
 	methods: {
 		canDrag(e) {
-			const coords = getTouch(e);
-			return (
-				this.moving &&
-				coords.clientY > this.startCoords.y &&
-				this.$refs.content.scrollTop === 0
-			);
+			return this.moving;
 		},
 		onDown(e) {
 			const coords = getTouch(e);
-			this.moving = this.$refs.content.scrollTop === 0;
+			this.moving = true;
 			this.startCoords = {x: coords.clientX, y: coords.clientY};
 		},
 		onMove(e) {
 			if(this.canDrag(e)) {
 				const coords = getTouch(e);
+				const shiftX = this.currentShiftX = (coords.clientX - this.startCoords.x) / 2;
 				const shiftY = this.currentShiftY = (coords.clientY - this.startCoords.y) / 2;
-				this.$refs.modalPage.style.transition = 'none';
-				this.$refs.modalPage.style.transform = `translate(-50%, ${shiftY}px)`;
+				this.$refs.modalDialog.style.transition = 'none';
+				this.$refs.modalDialog.style.transform = `translate(calc(-50% + ${shiftX}px), calc(-50% + ${shiftY}px))`;
 			}
 		},
 		onUp(e) {
-			if(this.canDrag(e) && Math.abs(this.currentShiftY) > 20) {
+			if(this.canDrag(e) && (Math.abs(this.currentShiftX) > 20 || Math.abs(this.currentShiftY) > 20)) {
 				this.closeFire();
 			}
-			removeStyles(this.$refs.modalPage, ['transition', 'transform']);
+			removeStyles(this.$refs.modalDialog, ['transition', 'transform']);
 			this.moving = false;
-			this.currentShiftY = 0;
 			this.currentShiftX = 0;
+			this.currentShiftY = 0;
 		},
 		closeFire() {
 			this.$emit('input', false);
@@ -116,9 +110,10 @@ export default {
 
 
 <style lang="stylus">
-.modal-page-wrapper
+$dialogTransition = transform 500ms cubic-bezier(0.36, 0.66, 0.04, 1)
+.modal-dialog-wrapper
 	position relative
-	.modal-mask
+	.modal-dialog-mask
 		position fixed
 		top 50%
 		left 50%
@@ -128,49 +123,43 @@ export default {
 		transition transform 500ms ease-in-out
 		background-color rgba(0,0,0, 0.2)
 		border-radius 50%
-		z-index 2000
-	.modal-page
+		z-index 3000
+	.modal-dialog
 		position fixed
-		bottom 0
+		top 50%
 		left 50%
-		width 100%
+		width 90%
 		max-width 600px
 		height auto
 		min-height 100px
 		max-height 80%
 		max-height calc(100% - 100px)
 		max-height calc(100% - 100px - var(--safe-area-inset-top))
-		border-top-left-radius 20px
-		border-top-right-radius 20px
-		transform translate(-50%, 150%)
-		transition transform 500ms cubic-bezier(0.36, 0.66, 0.04, 1)
+		border-radius 20px
+		transform translate(-50%, -50%) scale(0)
+		transition $dialogTransition 0ms
 		background-color #fff
 		box-shadow 0 -3px 8px 3px rgba(0,0,0,0.1)
 		overflow hidden
 		user-select none
-		z-index 2001
-		.modal-page-header
+		z-index 3001
+		.modal-dialog-header
 			position absolute
 			top 0
 			left 0
 			height 60px
 			max-height 60px
 			width 100%
-		.modal-page-content
+		.modal-dialog-content
 			height auto
 			max-height calc(100vh - 100px)
 			max-height calc(100vh - 100px - var(--safe-area-inset-top))
 			padding-top 60px
-			overflow auto
+			overflow hidden
 	&.active
-		.modal-mask
+		.modal-dialog-mask
 			transform translate(-50%, -50%) scale(1)
-		.modal-page
-			transform translate(-50%, 0)
-	&.modal-page-card-type
-		.modal-page
-			width 90vw
-			border-radius 20px
-			margin-bottom 5vw
-			margin-bottom calc(5vw + var(--safe-area-inset-bottom))
+		.modal-dialog
+			transform translate(-50%, -50%) scale(1)
+			transition $dialogTransition 500ms
 </style>

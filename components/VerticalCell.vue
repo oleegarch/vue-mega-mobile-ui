@@ -1,6 +1,10 @@
 <template>
-	<div class="vertical-cell column items-center justify-start">
-		<Avatar v-if="src" :src="src"/>
+	<div
+		class="vertical-cell column items-center justify-start"
+		:class="{'skew-background-on-hover': hasClickListener, 'pa-xs': hasClickListener}"
+		v-skewEffect.onlyClick="{'initialize': hasClickListener, 'click': clickListener}"
+	>
+		<Avatar v-if="src" :src="src" :size="avatarSize"/>
 		<div class="vertical-cell-title">
 			{{ title }}
 			<slot name="title"/>
@@ -14,6 +18,7 @@
 
 
 <script>
+import skewEffectDirective from '../utils/skewEffectDirective.js'
 import Avatar from '../components/Avatar.vue'
 
 export default {
@@ -23,7 +28,19 @@ export default {
 	props: {
 		src: String,
 		title: String,
-		description: String
+		description: String,
+		avatarSize: [String,Number]
+	},
+	computed: {
+		hasClickListener() {
+			return this.link || !!(this.$listeners && this.$listeners.click);
+		},
+		clickListener() {
+			return this.$listeners && this.$listeners.click;
+		}
+	},
+	directives: {
+		skewEffect: skewEffectDirective
 	}
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="tabs"
-		:class="{'stretch-tabs': stretchTabs}"
+		:class="{'stretch-tabs': stretchTabs, 'no-hr': noHr, 'top-hr': topHr}"
 	>
 		<div
 			class="tab-titles flex"
@@ -53,9 +53,12 @@ export default {
 		}
 	},
 	props: {
+		value: String,
 		defaultTab: String,
 		sticky: String,
-		tabs: Array
+		tabs: Array,
+		noHr: Boolean,
+		topHr: Boolean
 	},
 	computed: {
 		tabNames() {
@@ -66,11 +69,15 @@ export default {
 		}
 	},
 	watch: {
+		value(v) {
+			this.activeTab = v;
+		},
 		activeTab(v) {
 			if(this.tabsAlive.indexOf(v) === -1) {
 				this.tabsAlive.push(v);
 			}
 			this.moveLineToTitle(v);
+			this.$emit('input', v);
 		}
 	},
 	methods: {
@@ -119,7 +126,6 @@ export default {
 		position relative
 		width 100%
 		overflow-x auto
-		background-color #fff
 		border-bottom 1px solid #eee
 		> .tab-title
 			text-align center
@@ -147,4 +153,10 @@ export default {
 		> .tab-titles
 			> .tab-title
 				width 100%
+	&.no-hr
+		> .tab-titles
+			border-bottom 0px
+	&.top-hr
+		> .tab-titles
+			border-top 1px solid #eee
 </style>

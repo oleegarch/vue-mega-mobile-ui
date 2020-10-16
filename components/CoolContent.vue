@@ -2,7 +2,8 @@
 	<div
 		class="cool-content"
 		:class="{
-			'active': active
+			'active': active,
+			'pa-md': withPadding
 		}"
 	>
 		<slot/>
@@ -21,11 +22,15 @@ export default {
 
 
 <style lang="stylus">
+$transition = opacity 300ms ease
 .cool-content
 	opacity 0
-	transition opacity 300ms ease 500ms
+	transition $transition 500ms
 .cool-content&.active,
 .modal-page-wrapper&.active .cool-content,
-.modal-view&.active .cool-content
+.modal-view&.active .cool-content,
+.modal-dialog-wrapper&.active .cool-content
 	opacity 1
+.modal-dialog-wrapper .cool-content
+	transition $transition 1000ms
 </style>

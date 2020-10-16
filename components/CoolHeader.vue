@@ -2,20 +2,23 @@
 	<div
 		class="cool-header"
 		:class="{'active': active}"
+		:style="noBackground ? {'backgroundColor': 'transparent'} : null"
 	>
 		<div class="fit cool-header-content flex-center">
 			<div class="cool-header-additional-content">
-				<i
+				<Icon
 					v-if="$listeners.cancel"
-					class="material-icons cool-header-icon cool-header-cancel"
+					name="cancel"
+					class="cool-header-icon cool-header-cancel"
 					@click="() => $emit('cancel')"
-				>cancel</i>
-				<i
+				/>
+				<Icon
 					v-if="$listeners.back"
-					class="material-icons cool-header-icon cool-header-back"
+					name="navigate_before"
+					class="cool-header-icon cool-header-back"
 					@click="() => $emit('back')"
-				>navigate_before</i>
-				<div class="cool-header-border-bottom"></div>
+				/>
+				<div v-if="!noHr" class="cool-header-border-bottom"></div>
 			</div>
 			<slot/>
 		</div>
@@ -26,13 +29,17 @@
 <script>
 export default {
 	props: {
-		active: Boolean
+		active: Boolean,
+		noHr: Boolean,
+		noBackground: Boolean
 	}
 }
 </script>
 
 
 <style lang="stylus">
+$contentTransition = transform 500ms ease
+$iconTransition = transform 300ms ease
 .cool-header
 	position relative
 	width 100%
@@ -46,7 +53,7 @@ export default {
 		height 60px
 		min-height 60px
 		transform translateX(-100%)
-		transition transform 500ms ease 100ms
+		transition $contentTransition 100ms
 		> .cool-header-additional-content
 			position absolute
 			top 0
@@ -65,7 +72,7 @@ export default {
 		top 50%
 		transform translateY(-50%) scale(0)
 		font-size 30px
-		transition transform 300ms ease 500ms
+		transition $iconTransition 500ms
 		cursor pointer
 		user-select none
 		z-index 3
@@ -81,9 +88,15 @@ export default {
 		transform translateX(100%)
 .cool-header&.active,
 .modal-page-wrapper&.active,
-.modal-view&.active
+.modal-view&.active,
+.modal-dialog-wrapper&.active
 	.cool-header-content
 		transform translateX(0)
 	.cool-header-icon
 		transform translateY(-50%) scale(1)
+.modal-dialog-wrapper
+	.cool-header-content
+		transition $contentTransition 600ms
+	.cool-header-icon
+		transition $iconTransition 1000ms
 </style>

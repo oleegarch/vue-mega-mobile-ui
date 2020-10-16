@@ -1,15 +1,26 @@
 <template>
 	<div
-		class="radio-container"
-		:class="{'checked': active}"
-		@click="toggle"
+		class="row items-center radio-container"
+		:class="`justify-${justify}`"
 	>
-		<div class="radio-circle" :class="'bg-' + (active ? color : 'grey-5')"></div>
+		<div v-if="leftLabel" class="mr-xs" @click="toggle">
+			<span>{{ leftLabel }}</span>
+		</div>
 		<div
-			class="radio flex-center"
-			:class="['bg-' + color, 'text-' + textColor]"
+			class="radio-block"
+			:class="{'checked': active}"
+			@click="enable"
 		>
-			<div class="radio-active-circle"></div>
+			<div class="radio-circle" :class="'bg-' + (active ? color : 'grey-5')"></div>
+			<div
+				class="radio flex-center"
+				:class="['bg-' + color, 'text-' + textColor]"
+			>
+				<div class="radio-active-circle"></div>
+			</div>
+		</div>
+		<div v-if="label" class="ml-xs" @click="enable">
+			<span>{{ label }}</span>
 		</div>
 	</div>
 </template>
@@ -33,26 +44,33 @@ export default {
 		textColor: {
 			type: String,
 			default: 'white'
+		},
+		label: {
+			type: String
+		},
+		leftLabel: {
+			type: String
+		},
+		justify: {
+			type: String
 		}
 	},
 	watch: {
 		value(v) {
 			this.active = v;
-		},
-		active(v) {
-			this.$emit('input', v);
 		}
 	},
 	methods: {
-		toggle() {
-			this.active = !this.active;
+		enable() {
+			this.active = true;
+			this.$emit('input', this.active);
 		}
 	}
 }
 </script>
 
 <style lang="stylus">
-.radio-container
+.radio-block
 	position relative
 	cursor pointer
 	.radio
@@ -74,12 +92,13 @@ export default {
 		height 20px
 		width 20px
 		transition 200ms linear
-		opacity 0.5
+		opacity 1
 		border-radius 50%
 		z-index 1
 	&:hover
 		> .radio-circle
 			transform translate(-50%, -50%) scale(2)
+			opacity 0.1
 	&:not(.checked)
 		.radio
 			background-color #fff !important

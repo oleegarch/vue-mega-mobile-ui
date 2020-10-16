@@ -138,6 +138,10 @@ export default {
 			}
 		}
 
+		if(binding.value && typeof binding.value.onlyClick === 'boolean') {
+			binding.modifiers.onlyClick = binding.value.onlyClick;
+		}
+
 		if(
 			!binding.value ||
 			binding.value.initialize === undefined ||

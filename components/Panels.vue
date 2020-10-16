@@ -20,7 +20,7 @@
 
 
 <script>
-import { getSafeAreas } from '@/utils/styles.js'
+import { getSafeAreas } from '../utils/styles.js'
 
 export default {
 	data() {

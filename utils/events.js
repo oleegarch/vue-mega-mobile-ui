@@ -83,7 +83,7 @@ export function bindDirectiveEvents(options = {}) {
 		vm.bindedEvents = vm.bindedEvents || [];
 		const handlerNames = ['onTransitionEnd', 'onDown', 'onUp', 'onMove'];
 		const events = bindEvents(handlerNames.map(h => [h, options[h] || vm[h]]), {
-			bindElem: options.elem,
+			bindElem: options.elem ? options.elem === 'root' ? el : options.elem : null,
 			bindForElem: el,
 			eventOptions: options.eventOptions
 		});

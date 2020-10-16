@@ -1,26 +1,36 @@
 <template>
-	<div
-		v-animate
-		ref="outerInput"
-		class="outer-input flex items-center"
-		:class="{'focused': focused, 'has-text': hasText}"
-		@click="focusInput"
-	>
-		<div class="flex-center outer-input-before">
-			<slot name="before"/>
-		</div>
-		<input
-			v-model="input"
-			ref="input"
-			:type="type"
-			:placeholder="placeholder"
-			@focus="onFocus"
-			@blur="onBlur"
-		/>
-		<div class="outer-input-line" :style="{'transform-origin': originX + '% 50%'}"></div>
-		<div class="flex-center outer-input-after">
-			<slot name="after"/>
-			<i v-if="clearable && hasText" class="material-icons" @click="clear">clear</i>
+	<div class="outer-input-wrapper">
+		<label
+			v-if="label"
+			:for="name"
+			class="text-sm text-grey"
+		>
+			<span>{{ label }}</span>
+		</label>
+		<div
+			v-animate
+			ref="outerInput"
+			class="outer-input flex items-center"
+			:class="{'focused': focused, 'has-text': hasText, 'error': !!error}"
+			@click="focusInput"
+		>
+			<div class="flex-center outer-input-before">
+				<slot name="before"/>
+			</div>
+			<input
+				v-model="input"
+				ref="input"
+				:type="type"
+				:placeholder="placeholder"
+				:name="name"
+				@focus="onFocus"
+				@blur="onBlur"
+			/>
+			<div class="outer-input-line" :style="{'transform-origin': originX + '% 50%'}"></div>
+			<div class="flex-center outer-input-after">
+				<slot name="after"/>
+				<i v-if="clearable && hasText" class="material-icons" @click="clear">clear</i>
+			</div>
 		</div>
 	</div>
 </template>
@@ -33,16 +43,19 @@ export default {
 	data() {
 		return {
 			focused: !!this.focus,
-			input: '',
+			input: this.value,
 			originX: 50
 		}
 	},
 	props: {
 		value: [String,Number,Boolean],
 		type: String,
+		name: String,
 		placeholder: String,
+		label: String,
 		focus: Boolean,
-		clearable: Boolean
+		clearable: Boolean,
+		error: [String,Boolean]
 	},
 	watch: {
 		value(v, pv) {
@@ -126,4 +139,11 @@ export default {
 			color #aaa
 		> .outer-input-after
 			color var(--red)
+	&.focused,
+	&.focused > input
+		background-color #eee
+	&.error
+		> .outer-input-line
+			transform scaleX(1)
+			background-color var(--red)
 </style>

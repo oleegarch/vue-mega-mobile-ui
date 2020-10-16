@@ -1,32 +1,46 @@
 <template>
-	<div
-		class="cell flex justify-between items-center"
-		:class="{'skew-background-on-hover': !!clickListener}"
-		v-skewEffect.onlyClick="{'initialize': !!clickListener, 'click': clickListener}"
+	<a
+		:href="link"
+		target="_blank"
+		class="cell justify-between items-center"
+		:class="[reverse ? 'row-reverse' : 'row', {'skew-background-on-hover': hasClickListener, 'pa-xs': hasClickListener}]"
+		v-skewEffect.onlyClick="{'initialize': hasClickListener, 'click': clickListener}"
 	>
-		<div class="cell-before flex justify-start items-center">
+		<div class="cell-before justify-start items-center" :class="reverse ? 'row-reverse' : 'row'">
 			<slot name="before"/>
-			<Avatar
-				:src="src"
-				color="blue"
-				:content="!src ? title.split(/\s|,|\-|_/).map(t => t.slice(0, titleSliceLettersLength)).join('') : null"
-			/>
+			<a
+				class="flex"
+				:href="href"
+				target="_blank"
+			>
+				<Avatar
+					:src="src"
+					:size="avatarSize"
+					:title="title"
+					:class="reverse ? 'ml-sm' : 'mr-sm'"
+				/>
+			</a>
 			<div class="cell-info column items-start justify-center">
-				<div class="cell-title">
+				<a
+					v-if="title || $slots.title"
+					:href="href"
+					target="_blank"
+					class="cell-title"
+				>
 					{{ title }}
 					<slot name="title"/>
-				</div>
-				<div class="cell-description">
+				</a>
+				<div v-if="description || $slots.description" class="cell-description">
 					{{ description }}
 					<slot name="description"/>
 				</div>
 				<slot name="cell-info"/>
 			</div>
 		</div>
-		<div class="cell-after">
+		<div v-if="$slots.after" class="cell-after">
 			<slot name="after"/>
 		</div>
-	</div>
+	</a>
 </template>
 
 
@@ -40,15 +54,18 @@ export default {
 		Avatar
 	},
 	props: {
+		link: String,
+		href: String,
 		src: String,
 		title: String,
-		titleSliceLettersLength: {
-			type: Number,
-			default: 1
-		},
-		description: String
+		description: String,
+		avatarSize: [String,Number],
+		reverse: Boolean
 	},
 	computed: {
+		hasClickListener() {
+			return this.link || !!(this.$listeners && this.$listeners.click);
+		},
 		clickListener() {
 			return this.$listeners && this.$listeners.click;
 		}
@@ -68,8 +85,6 @@ export default {
 	.cell-description
 		font-size 13px
 	.cell-before
-		.avatar-wrapper
-			margin-right 10px
 		.cell-description
 			margin-top 3px
 </style>

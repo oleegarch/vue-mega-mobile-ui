@@ -1,5 +1,9 @@
 <template>
-	<div class="div" :class="{'with-padding': withPadding}">
+	<div
+		class="div"
+		:class="{'pa-md': withPadding}"
+		@click="e => $emit('click', e)"
+	>
 		<slot/>
 	</div>
 </template>
@@ -12,10 +16,3 @@ export default {
 	}
 }
 </script>
-
-
-<style lang="stylus">
-.div
-	&.with-padding
-		padding 20px
-</style>

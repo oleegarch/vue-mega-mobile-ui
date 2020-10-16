@@ -7,12 +7,16 @@
 			'height': size + 'px'
 		}"
 	>
-		<i class="material-icons" :style="{'font-size': iconSize + 'px'}">{{ icon }}<slot/></i>
+		<Icon :name="icon" :style="{'font-size': iconSize + 'px'}"/>
 	</div>
 </template>
 
 <script>
+import Icon from './Icon.vue'
 export default {
+	components: {
+		Icon
+	},
 	props: {
 		size: {
 			type: Number,

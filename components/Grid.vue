@@ -1,5 +1,5 @@
 <template>
-	<div class="grid flex justify-around wrap" :class="{'with-padding': withPadding}">
+	<div class="grid flex justify-around wrap" :class="{'pa-md': withPadding}">
 		<slot/>
 	</div>
 </template>
@@ -20,6 +20,4 @@ export default {
 		width 33%
 		width calc(33% - 10px)
 		margin 5px
-	&.with-padding
-		padding 20px
 </style>

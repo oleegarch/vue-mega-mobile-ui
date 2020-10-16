@@ -1,9 +1,27 @@
 <template>
 	<Div
-		class="container bg-white"
-		:class="{'container-inner container-styles': inner}"
-		:style="typeof inner === 'string' ? {'width': inner} : null"
+		class="container"
+		:class="[
+			typeof color === 'string' && `bg-${color}`,
+			color === 'white' ? 'text-black' : 'text-white',
+			{
+				'container-inner': inner,
+				'container-styles': styled
+			}
+		]"
+		:style="[
+			typeof inner === 'string'
+				? {'width': inner}
+				: null,
+			Array.isArray(color)
+				? {'background': colorsToGradientValue(180, ...color)}
+				: null
+		]"
+		@click="e => $emit('click', e)"
 	>
+		<div v-if="title" class="text-md text-bold pa-md pb-none">
+			<span>{{ title }}</span>
+		</div>
 		<HorizontalScroll
 			v-if="horizontal"
 			class="full-width"
@@ -18,8 +36,9 @@
 </template>
 
 <script>
-import HorizontalScroll from '@/components/HorizontalScroll.vue'
-import Div from '@/components/Div.vue'
+import HorizontalScroll from '../components/HorizontalScroll.vue'
+import Div from '../components/Div.vue'
+import { colorsToGradientValue } from '../utils/styles.js'
 
 export default {
 	components: {
@@ -27,8 +46,17 @@ export default {
 		Div
 	},
 	props: {
+		title: String,
+		color: {
+			type: [String,Array],
+			default: 'white'
+		},
 		horizontal: Boolean,
-		inner: [Boolean,String]
+		inner: [Boolean,String],
+		styled: Boolean
+	},
+	methods: {
+		colorsToGradientValue
 	}
 }
 </script>
@@ -38,11 +66,12 @@ export default {
 .container
 	width 100%
 	box-shadow 0 0 5px 1px rgba(0,0,0, 0.1)
-.container-inner
-	width 95%
-	margin 0 auto
-.container-styles
-	border-radius 10px
-	border 1px solid #eee
-	box-shadow 0 3px 5px 1px rgba(0,0,0, 0.1)
+	&.container-inner
+		width 95%
+		margin-left auto
+		margin-right auto
+	&.container-styles
+		border-radius 10px
+		border 1px solid #eee
+		box-shadow 0 3px 5px 1px rgba(0,0,0, 0.1)
 </style>
